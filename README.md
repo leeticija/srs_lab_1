@@ -1,12 +1,12 @@
 # Zaštita lozinki simetričnom enkripcijom
 
-Ovaj program pisan je u programskom jeziku ```python``` te je za implementaciju kriptografskih funkcija korišten python paket ```pycryptodome``` (https://pycryptodome.readthedocs.io/en/latest/src/introduction.html) i moduli koje sadrži: ```Crypto.Hash```, ```Crypto.Random```, ```Crypto.Cipher```, ```Crypto.Protocol```
+Ovaj program pisan je u programskom jeziku ```python``` te je za implementaciju kriptografskih funkcija korišten python paket ```pycryptodome``` https://pycryptodome.readthedocs.io/en/latest/src/introduction.html i moduli: ```Crypto.Hash```, ```Crypto.Random```, ```Crypto.Cipher```, ```Crypto.Protocol```. Pokreće se iz komandne linije te 
 
 ## Mogućnosti programa:
-- inicijalizacija
-- pohrana para adresa/zaporka
-- dohvat zaporke za određenu adresu
-- update zaporke za određenu adresu
+- inicijalizacija (```init```)
+- pohrana para adresa/zaporka (```put```)
+- dohvat zaporke za određenu adresu (```get```)
+- update zaporke za određenu adresu (```put```)
 
 ## Inicijalizacija password managera
 
