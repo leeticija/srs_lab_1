@@ -16,7 +16,9 @@ Password manager sve podatke zapisuje u bazu podataka. Pri svakom dohvatu/sprema
 ```PBKDF2(masterPassword, salt, 32, count=1000, hmac_hash_module=SHA512)```
 
 Baza podataka ima sljedeće tablice i podatke:
+
 ```TABLE passwords(address VARCHAR, password VARCHAR, salt VARCHAR)```
+
 ```TABLE master_password(master_password VARCHAR, salt VARCHAR)```
 
 ## Pohrana para adresa/zaporka
