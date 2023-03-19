@@ -45,8 +45,7 @@ def get_password_by_address(address, master_pass):
   key = PBKDF2(master_pass.strip(), decoded_salt, 32, count=1000, hmac_hash_module=SHA512)
   decoded = base64.b64decode(fetched[0][1])
   cipher2 = AES.new(key, AES.MODE_GCM, nonce=decoded[:16])
-  decrypted=cipher2.decrypt(decoded[16:]).decode('utf-8')
-  #print("size:", len(decrypted))
+  decrypted = cipher2.decrypt(decoded[16:]).decode('utf-8')
 
   if base64.b64decode(decrypted[:44]) != address_sha:
     print("Master password incorrect or integrity check failed.")
