@@ -4,9 +4,8 @@ Ovaj program pisan je u programskom jeziku ```python``` te je za implementaciju 
 
 ## Mogućnosti programa:
 - inicijalizacija ```init```
-- pohrana para adresa-zaporka ```put```
+- pohrana/update para adresa-zaporka ```put```
 - dohvat zaporke za određenu adresu ```get```
-- update zaporke za određenu adresu ```put```
 
 ## Organizacija baze
 
@@ -47,16 +46,21 @@ Budući da se prilikom svake akcije provjerava uneseni masterPassword, potrebno 
 - budući da je u bazu bio šifriran i spremljen samo sažetak masterPassworda, dešifriranjem dobijemo taj sažetak
 - ispravnost masterPassworda potvrdimo usporedbom sažetka **unesenog** masterPassworda i **dešifriranog** masterPassworda
 
-## Pohrana para adresa-zaporka
+## Pohrana/update para adresa-zaporka
 
 Komanda za pohranu nove ili update postojeće zaporke je sljedeća: ```./secretary put {masterPassword} {address} {addressPassword}```
 
+- napravi se SHA suma tražene adrese te se u bazi pokuša pronaći redak u kojem je ta adresa
+- ako redak ne postoji, stvorit će se novi zapis i spremiti istim postupkom kao i kod updatea
+- generira se ```salt``` vrijednost te ključ za simetričnu enkripciju
+
+```salt = get_random_bytes(16)```
+```key = PBKDF2(master_pass.strip(), salt, 32, count=1000, hmac_hash_module=SHA512)```
+
+- prije enkripcije konkateniraju se dvije stvari: ```address_sha``` i ```password```. To je potrebno kako bi se kod dohvata lozinke mogao provjeriti **integritet**, tj. da napadač nije slučajno izmiješao retke u bazi i da smo sigurni da je ta lozinka koja nam je vraćena baš ta koja pripada toj adresi.
+- 
 
 
 ## Dohvat lozinke za određenu adresu
-
-The file explorer is accessible using the button in left corner of the navigation bar. You can create a new file by clicking the **New file** button in the file explorer. You can also create folders by clicking the **New folder** button.
-
-## Update lozinke za određenu adresu
 
 The file explorer is accessible using the button in left corner of the navigation bar. You can create a new file by clicking the **New file** button in the file explorer. You can also create folders by clicking the **New folder** button.
