@@ -4,7 +4,7 @@ Ovaj program pisan je u programskom jeziku ```python``` te je za implementaciju 
 
 ## Mogućnosti programa:
 - inicijalizacija ```init```
-- pohrana para adresa/zaporka ```put```
+- pohrana para adresa-zaporka ```put```
 - dohvat zaporke za određenu adresu ```get```
 - update zaporke za određenu adresu ```put```
 
@@ -28,8 +28,16 @@ Password manager sve podatke zapisuje u bazu podataka. Pri svakom dohvatu/sprema
 
 ```AES.encrypt(master_sha)```
 
-- budući da prilikom enkripcije funkcija ```encrypt()``` samostalno generira ```nonce``` (najčešće informacija od 16 bajtova) koja služi kao dodatna metoda zaštite i jednokratno se koristi. ```nonce``` je potreban i za dekripciju pa ga je potrebno sačuvati. Stoga se prefiksira na šifrat lozinke te se zatim enkodira ```base64``` enkoderom i sprema u bazu. Prilikom dešifriranja masterPassworda ```nonce``` lako se ponovno ekstrahira (prvih 16 bajtova).
+- prilikom enkripcije funkcija ```encrypt()``` samostalno generira ```nonce``` (najčešće informacija od 16 bajtova) koja služi kao dodatna metoda zaštite i jednokratno se koristi. ```nonce``` je potreban i za dekripciju pa ga je potrebno sačuvati. Stoga se prefiksira na šifrat lozinke te se zatim enkodira ```base64``` enkoderom i sprema u bazu. Prilikom dešifriranja masterPassworda ```nonce``` lako se ponovno ekstrahira (prvih 16 bajtova).
 
+## Provjera master zaporke
+
+Budući da se prilikom svake akcije provjerava uneseni masterPassword, potrebno je i taj postupak dodatno opisati. To se događa na sljedeći način:
+
+- iz baze podataka (tablice master_password) dohvati se ```salt``` te se pomoću ```KDF(given_masterPassword, salt)``` generira ključ
+- ekstrahira se ```nonce``` (prvih 16 bajtova columna master_password) te se dešifrira ostatak bajtova
+- budući da je u bazu bio šifriran i spremljen samo sažetak masterPassworda, dešifriranjem dobijemo taj sažetak
+- ispravnost masterPassworda potvrdimo usporedbom sažetka unesenog masterPassworda i dešifriranog
 
 Baza podataka ima sljedeće tablice i podatke:
 
@@ -37,9 +45,11 @@ Baza podataka ima sljedeće tablice i podatke:
 
 ```TABLE master_password(master_password VARCHAR, salt VARCHAR)```
 
-## Pohrana para adresa/zaporka
+## Pohrana para adresa-zaporka
 
-The file explorer is accessible using the button in left corner of the navigation bar. You can create a new file by clicking the **New file** button in the file explorer. You can also create folders by clicking the **New folder** button.
+Komanda za pohranu nove ili update postojeće zaporke je sljedeća: ```./secretary put {masterPassword} {address} {addressPassword}```
+
+
 
 ## Dohvat lozinke za određenu adresu
 
