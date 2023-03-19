@@ -50,8 +50,8 @@ Budući da se prilikom svake akcije provjerava uneseni masterPassword, potrebno 
 
 Komanda za pohranu nove ili update postojeće zaporke je sljedeća: ```./secretary put {masterPassword} {address} {addressPassword}```
 
-- napravi se SHA suma tražene adrese te se u bazi pokuša pronaći redak u kojem je ta adresa
-- ako redak ne postoji, stvorit će se novi zapis i spremiti istim postupkom kao i kod updatea
+- napravi se SHA suma dane adrese te se u bazi pokuša pronaći redak u kojem se nalazi ta adresa
+- ako redak **ne** postoji, stvorit će se novi zapis i spremiti se istim postupkom kao i kod updatea, a on je opisan u nastavku
 - generira se ```salt``` vrijednost te ključ za simetričnu enkripciju
 
 ```salt = get_random_bytes(16)```
