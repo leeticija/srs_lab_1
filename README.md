@@ -57,7 +57,7 @@ Komanda za pohranu nove ili update postojeće zaporke je sljedeća: ```./secreta
 ```salt = get_random_bytes(16)```
 ```key = PBKDF2(master_pass.strip(), salt, 32, count=1000, hmac_hash_module=SHA512)```
 
-- prije enkripcije konkateniraju se dvije stvari: ```address_sha``` i ```password```. To je potrebno kako bi se kod dohvata lozinke mogao provjeriti **integritet**, tj. da napadač nije slučajno izmiješao retke u bazi i da smo sigurni da je ta lozinka koja nam je vraćena baš ta koja pripada toj adresi.
+- prije enkripcije konkateniraju se dvije stvari: ```address_sha``` i ```password``` koji je prethodno nadopunjen sa _zero characterima_ ```password.rjust(256, '\0')```. To je potrebno kako bi se kod dohvata lozinke mogao provjeriti **integritet**, tj. da napadač nije slučajno izmiješao retke u bazi i da smo sigurni da je ta lozinka koja nam je vraćena baš ta koja pripada toj adresi.
 - 
 
 
