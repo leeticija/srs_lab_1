@@ -35,7 +35,7 @@ Password manager sve podatke zapisuje u bazu podataka. Pri svakom dohvatu/sprema
 
 ```AES.encrypt(master_sha)```
 
-- prilikom enkripcije funkcija ```encrypt()``` samostalno generira ```nonce``` (najčešće informacija od 16 bajtova) koja služi kao dodatna metoda zaštite i jednokratno se koristi. ```nonce``` je potreban i za dekripciju pa ga je potrebno sačuvati. Stoga se prefiksira na šifrat lozinke te se zatim enkodira ```base64``` enkoderom i sprema u bazu. Prilikom dešifriranja masterPassworda ```nonce``` lako se ponovno ekstrahira (prvih 16 bajtova).
+- prilikom enkripcije funkcija ```encrypt()``` samostalno generira ```nonce``` (najčešće informacija od 16 bajtova) koja služi kao dodatna metoda zaštite i jednokratno se koristi. ```nonce``` je potreban i za dekripciju pa ga je potrebno sačuvati. Stoga se prefiksira na šifrat lozinke te se zatim enkodira ```base64``` enkoderom i sprema u bazu. Prilikom dešifriranja masterPassworda lako se ponovno ekstrahira (prvih 16 bajtova).
 
 ## Provjera master zaporke
 
@@ -57,10 +57,23 @@ Komanda za pohranu nove ili update postojeće zaporke je sljedeća: ```./secreta
 ```salt = get_random_bytes(16)```
 ```key = PBKDF2(master_pass.strip(), salt, 32, count=1000, hmac_hash_module=SHA512)```
 
-- prije enkripcije konkateniraju se dvije stvari: ```address_sha``` i ```password``` koji je prethodno nadopunjen sa _zero characterima_ ```password.rjust(256, '\0')```. To je potrebno kako bi se kod dohvata lozinke mogao provjeriti **integritet**, tj. da napadač nije slučajno izmiješao retke u bazi i da smo sigurni da je ta lozinka koja nam je vraćena baš ta koja pripada toj adresi.
-- 
+- prije enkripcije konkateniraju se dvije stvari: ```address_sha``` : ```password``` koji je prethodno nadopunjen sa _zero characterima_ ```password.rjust(256, '\0')```. Nadopunjen je do 256 znakova zato što je to uvjet zadatka.
+- prethodni korak je potreban kako bi se kod dohvata lozinke mogao provjeriti **integritet**, tj. da napadač nije slučajno izmiješao retke u bazi i da smo sigurni da je ta lozinka koja nam je vraćena baš ta koja pripada toj adresi.
+
+```AES.encrypt(address_sha+password)```
+
+- prilikom enkripcije funkcija ```encrypt()``` samostalno generira ```nonce``` (najčešće informacija od 16 bajtova) koja služi kao dodatna metoda zaštite i jednokratno se koristi. ```nonce``` je potreban i za dekripciju pa ga je potrebno sačuvati. Stoga se prefiksira na šifrat lozinke te se zatim sve enkodira ```base64``` enkoderom i sprema u bazu. Prilikom dešifriranja passworda lako se ponovno ekstrahira (prvih 16 bajtova).
 
 
 ## Dohvat lozinke za određenu adresu
 
-The file explorer is accessible using the button in left corner of the navigation bar. You can create a new file by clicking the **New file** button in the file explorer. You can also create folders by clicking the **New folder** button.
+Prilikom dohvata lozinke za određenu adresu provode se sljedeći koraci:
+- računanje SHA sume dane adrese
+
+```address_sha = SHA256.new(data=bytes(address, 'utf-8')).digest()```
+
+- dohvat adrese iz baze (jer su u bazi adrese spremljene kao SHA sume)
+- generiranje simetričnog ključa pomoću dohvaćenog ```salta```
+
+```key = PBKDF2(master_pass, decoded_salt, 32, count=1000, hmac_hash_module=SHA512)```
+- dekriptiranje pomoću stvorenog ključa
