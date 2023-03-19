@@ -8,7 +8,7 @@
 
 ## Inicijalizacija password managera
 
-Komanda za inicijalizaciju password managera je sljedeća: ```./secretary init _masterPassword_```
+Komanda za inicijalizaciju password managera je sljedeća: ```./secretary init {masterPassword}```
 
 ## Pohrana para adresa/zaporka
 
