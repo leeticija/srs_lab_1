@@ -13,7 +13,9 @@ Ovaj program pisan je u programskom jeziku ```python``` te je za implementaciju 
 Komanda za inicijalizaciju password managera je sljedeća: ```./secretary init {masterPassword}```
 Password manager sve podatke zapisuje u bazu podataka. Pri svakom dohvatu/spremanju podataka prvo se provjerava uneseni masterPassword. Zato je ovaj korak inicijalizacije jako bitan. Kao prvo, masterPassword potrebno je negdje spremiti da bismo kod kasnijih njegovih provjera nekako mogli do njega doći. MasterPassword spremljen je u zasebnu tablicu u bazi podataka uz sljedeće korake:
 - generiranje ključa za simetričnu enkripciju komandom
+
 ```PBKDF2(masterPassword, salt, 32, count=1000, hmac_hash_module=SHA512)```
+
 
 Baza podataka ima sljedeće tablice i podatke:
 
