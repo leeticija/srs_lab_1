@@ -21,11 +21,11 @@ Password manager sve podatke zapisuje u bazu podataka. Pri svakom dohvatu/sprema
 
 - računanje hash sume raw vrijednosti danog master passworda:
 
-```SHA256.new(data=bytes(sys.argv[2], 'utf-8')).digest()```
+```master_sha = SHA256.new(data=bytes(sys.argv[2], 'utf-8')).digest()```
 
 - enkripcija dobivene hash vrijednost:
 
-```AES.encrypt(hashed_password_to_encrypt)```
+```AES.encrypt(master_sha)```
 
 - budući da prilikom enkripcije funkcija ```encrypt()``` samostalno generira ```nonce``` (najčešće informacija od 16 bajtova) koja služi kao dodatna metoda zaštite i jednokratno se koristi. ```nonce``` je potreban i za dekripciju pa ga je potrebno sačuvati. Stoga se prefiksira na šifrat lozinke te se zatim enkodira ```base64``` enkoderom i sprema u bazu. Prilikom dešifriranja masterPassworda ```nonce``` lako se ponovno ekstrahira (prvih 16 bajtova).
 
