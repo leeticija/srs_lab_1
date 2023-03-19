@@ -45,7 +45,7 @@ def get_password_by_address(address, master_pass):
   key = PBKDF2(master_pass.strip(), decoded_salt, 32, count=1000, hmac_hash_module=SHA512)
   decoded = base64.b64decode(fetched[0][1])
   cipher2 = AES.new(key, AES.MODE_GCM, nonce=decoded[:16])
-  decrypted = cipher2.decrypt(decoded[16:]).decode('utf-8')
+  decrypted=cipher2.decrypt(decoded[16:]).decode('utf-8')
 
   if base64.b64decode(decrypted[:44]) != address_sha:
     print("Master password incorrect or integrity check failed.")
@@ -112,11 +112,10 @@ def put_password(master_pass, address, password):
   salt = get_random_bytes(16)
   key = PBKDF2(master_pass.strip(), salt, 32, count=1000, hmac_hash_module=SHA512)
   cipher = AES.new(key, AES.MODE_GCM)
-  to_encrypt = base64.b64encode(address_sha).decode('ascii') + " : " + base64.b64encode(bytes(password, 'utf-8')).decode('ascii')
+  to_encrypt = base64.b64encode(address_sha).decode('ascii') + " : " + base64.b64encode(bytes(password.rjust(256, '\0'), 'utf-8')).decode('ascii')
   ciphertext = cipher.encrypt(bytes(to_encrypt, 'utf-8'))  
   # data to be saved in database: (nonce+ciphertext)
   data = cipher.nonce + ciphertext
-  print("size of data before base64:", len(data))
   # encode bytes to base64 before saving to database:
   encoded = base64.b64encode(data).decode('ascii')
   # same for the salt that was used for generating key:
