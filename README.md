@@ -1,6 +1,6 @@
 # Zaštita lozinki simetričnom enkripcijom
 
-Ovaj program pisan je u programskom jeziku **python** te je za implementaciju kriptografskih funkcija korišten python paket ```pycryptodome``` i moduli koje sadrži: ```Crypto.Hash```, ```Crypto.Random```, ```Crypto.Cipher```, ```Crypto.Protocol```
+Ovaj program pisan je u programskom jeziku ```python``` te je za implementaciju kriptografskih funkcija korišten python paket ```pycryptodome``` i moduli koje sadrži: ```Crypto.Hash```, ```Crypto.Random```, ```Crypto.Cipher```, ```Crypto.Protocol```
 
 ## Mogućnosti programa:
 - inicijalizacija
