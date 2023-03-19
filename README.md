@@ -30,7 +30,7 @@ Password manager sve podatke zapisuje u bazu podataka. Pri svakom dohvatu/sprema
 
 - računanje hash sume raw vrijednosti danog master passworda:
 
-```master_sha = SHA256.new(data=bytes(sys.argv[2], 'utf-8')).digest()```
+```master_sha = SHA256.new(data=masterPassword, 'utf-8')).digest()```
 
 - enkripcija dobivene hash vrijednost:
 
@@ -45,7 +45,7 @@ Budući da se prilikom svake akcije provjerava uneseni masterPassword, potrebno 
 - iz baze podataka (tablice master_password) dohvati se ```salt``` te se pomoću ```KDF(given_masterPassword, salt)``` generira ključ
 - ekstrahira se ```nonce``` (prvih 16 bajtova columna master_password) te se dešifrira ostatak bajtova
 - budući da je u bazu bio šifriran i spremljen samo sažetak masterPassworda, dešifriranjem dobijemo taj sažetak
-- ispravnost masterPassworda potvrdimo usporedbom sažetka unesenog masterPassworda i dešifriranog
+- ispravnost masterPassworda potvrdimo usporedbom sažetka **unesenog** masterPassworda i **dešifriranog** masterPassworda
 
 ## Pohrana para adresa-zaporka
 
