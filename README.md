@@ -8,6 +8,14 @@ Ovaj program pisan je u programskom jeziku ```python``` te je za implementaciju 
 - dohvat zaporke za određenu adresu ```get```
 - update zaporke za određenu adresu ```put```
 
+## Organizacija baze
+
+Baza podataka ima sljedeće tablice i podatke:
+
+```TABLE passwords(address VARCHAR, password VARCHAR, salt VARCHAR)```
+
+```TABLE master_password(master_password VARCHAR, salt VARCHAR)```
+
 ## Inicijalizacija password managera
 
 Komanda za inicijalizaciju password managera je sljedeća: ```./secretary init {masterPassword}```
@@ -38,12 +46,6 @@ Budući da se prilikom svake akcije provjerava uneseni masterPassword, potrebno 
 - ekstrahira se ```nonce``` (prvih 16 bajtova columna master_password) te se dešifrira ostatak bajtova
 - budući da je u bazu bio šifriran i spremljen samo sažetak masterPassworda, dešifriranjem dobijemo taj sažetak
 - ispravnost masterPassworda potvrdimo usporedbom sažetka unesenog masterPassworda i dešifriranog
-
-Baza podataka ima sljedeće tablice i podatke:
-
-```TABLE passwords(address VARCHAR, password VARCHAR, salt VARCHAR)```
-
-```TABLE master_password(master_password VARCHAR, salt VARCHAR)```
 
 ## Pohrana para adresa-zaporka
 
