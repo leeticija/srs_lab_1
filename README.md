@@ -12,19 +12,22 @@ Ovaj program pisan je u programskom jeziku ```python``` te je za implementaciju 
 
 Komanda za inicijalizaciju password managera je sljedeća: ```./secretary init {masterPassword}```
 Password manager sve podatke zapisuje u bazu podataka. Pri svakom dohvatu/spremanju podataka prvo se provjerava uneseni masterPassword. Zato je ovaj korak inicijalizacije jako bitan. Kao prvo, masterPassword potrebno je negdje spremiti da bismo kod kasnijih njegovih provjera nekako mogli do njega doći. MasterPassword spremljen je u zasebnu tablicu u bazi podataka uz sljedeće korake:
-- generiranje ključa za simetričnu enkripciju komandom
+
+- generiranje ```salt``` vrijednosti te ključa za simetričnu enkripciju komandama:
+
+```salt = get_random_bytes(16)```
 
 ```PBKDF2(masterPassword, salt, 32, count=1000, hmac_hash_module=SHA512)```
 
-- računanje hash sume raw vrijednosti danog master passworda
+- računanje hash sume raw vrijednosti danog master passworda:
 
 ```SHA256.new(data=bytes(sys.argv[2], 'utf-8')).digest()```
 
-- enkripcija dobivene hash vrijednost
+- enkripcija dobivene hash vrijednost:
 
-```encrypt(hashed_password_to_encrypt)```
+```AES.encrypt(hashed_password_to_encrypt)```
 
-- budući da prilikom enkripcije funkcija ```encrypt()``` samostalno generira ```nonce``` (najčešće informacija od 16 bajtova) koji služi kao dodatna metoda zaštite i jednokratno se koristi. ```nonce``` je potreban i kod dekripcije pa ga je potrebno sačuvati. Stoga je nonce prefiksiran na šifrirani tekst koji se zatim enkodira base64 enkoderom i sprema u bazu. Prilikom dešifriranja masterPassworda lako se ekstrahira nonce (prvih 16 bajtova) te se može iskoristiti.
+- budući da prilikom enkripcije funkcija ```encrypt()``` samostalno generira ```nonce``` (najčešće informacija od 16 bajtova) koja služi kao dodatna metoda zaštite i jednokratno se koristi. ```nonce``` je potreban i za dekripciju pa ga je potrebno sačuvati. Stoga se prefiksira na šifrat lozinke te se zatim enkodira ```base64``` enkoderom i sprema u bazu. Prilikom dešifriranja masterPassworda ```nonce``` lako se ponovno ekstrahira (prvih 16 bajtova).
 
 
 Baza podataka ima sljedeće tablice i podatke:
