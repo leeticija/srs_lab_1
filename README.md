@@ -16,6 +16,16 @@ Password manager sve podatke zapisuje u bazu podataka. Pri svakom dohvatu/sprema
 
 ```PBKDF2(masterPassword, salt, 32, count=1000, hmac_hash_module=SHA512)```
 
+- računanje hash sume raw vrijednosti danog master passworda
+
+```SHA256.new(data=bytes(sys.argv[2], 'utf-8')).digest()```
+
+- enkripcija dobivene hash vrijednost
+
+```encrypt(hashed_password_to_encrypt)```
+
+- budući da prilikom enkripcije funkcija ```encrypt()``` samostalno generira ```nonce``` (najčešće informacija od 16 bajtova) koji služi kao dodatna metoda zaštite i jednokratno se koristi. ```nonce``` je potreban i kod dekripcije pa ga je potrebno sačuvati. Stoga je nonce prefiksiran na šifrirani tekst koji se zatim enkodira base64 enkoderom i sprema u bazu. Prilikom dešifriranja masterPassworda lako se ekstrahira nonce (prvih 16 bajtova) te se može iskoristiti.
+
 
 Baza podataka ima sljedeće tablice i podatke:
 
